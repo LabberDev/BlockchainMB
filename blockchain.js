@@ -17,21 +17,43 @@ class Blockchain
 
     isValidChain(chain)
     {
-        //in javascript non puoi confontare 2 oggetti di classi diverse
+        //  confronto del genesis block calcolato con quello ricevuto
+        //  (in javascript non puoi confontare 2 oggetti di classi diverse)
         if(JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis()))
             return false;
             
+        //  controlla ogni blocco della catena
         for (let i = 1; i < chain.length; i++)
         {
             const block =   chain[i];
             const lastBlock =   chain[i-1];
 
+            //  se l'hash del penultimo blocco coincide con il lastHash dell'ultimo
+            //  se l'hash dell'ultimo blocco è effettivamente quello calcolato
             if(block.lastHash   !== lastBlock.hash  ||  block.hash  !== Block.blockHash(block))
                 return false;
         }
 
         return true;
     }
+
+    replaceChain(newChain) {
+        //se la nuova catena è uguale o più corta di quella attuale
+        if (newChain.length <= this.chain.length)
+        {
+            console.log('Received chain is not longer than the current chain.');
+            return;
+        }
+        //se la nuova catena è valida o meno
+        else if (!this.isValidChain(newChain))
+        {
+            console.log('The received chain is not valid.');
+            return;
+        }
+      
+        console.log('Replacing blockchain with the new chain.');
+        this.chain = newChain;
+      }
 }
 
 module.exports = Blockchain;

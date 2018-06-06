@@ -41,6 +41,7 @@ class Block
 		return SHA256(`${timestamp}${lastHash}${data}`).toString();
 	}
 
+	//do the hash function on the received block
 	static blockHash(block)
 	{
 		const { timestamp, lastHash, data }	=	block;
