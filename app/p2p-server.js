@@ -19,7 +19,7 @@ class P2pServer
     {
         const server = new Websocket.Server({ port: P2P_PORT });
 
-        //  ad ogni connessione, viene pushato il socket nuovo
+        //  ad ogni connessione, viene chiamata la connectSocket
         server.on('connection', socket => this.connectSocket(socket));
 
         this.connectToPeers();
@@ -27,6 +27,7 @@ class P2pServer
         console.log(`Listening for peer-to-peer connections: ${P2P_PORT}`);
     }
 
+    //  il client richiederà la connessione a certi peers, questa funzione li connette se possibile
     connectToPeers()
     {
         peers.forEach(peer =>
@@ -36,10 +37,40 @@ class P2pServer
         });
     }
 
+    //  aggiunge all'array 'sockets' il nuovo socket
     connectSocket(socket)
     {
         this.sockets.push(socket);
         console.log('Socket connected');
+
+        this.messageHandler(socket);
+        
+        this.sendChain(socket);
+    }
+
+    //  per ogni nuovo socket, prende il messaggio da lui ricevuto, effettua un parsing del 'data' ricevuto
+    messageHandler(socket)
+    {
+        socket.on('message', message =>
+        {
+            //  lo strasforma in un tipo javascript
+            const data  =   JSON.parse(message);
+
+            this.blockchain.replaceChain(data);
+        });
+    }
+
+    sendChain(socket)
+    {
+        socket.send(JSON.stringify(this.blockchain.chain));
+    }
+
+    syncChains()
+    {
+        this.sockets.forEach(socket =>
+        {
+            this.sockets.forEach(socket => this.sendChain(socket));
+        });
     }
 }
 
