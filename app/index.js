@@ -13,7 +13,7 @@ $ HTTP_PORT =   3002 npm run dev
 //oggetto di express
 const app   =   express();
 const bc    =   new Blockchain();
-const P2pServer =   new P2pServer(bc);
+const p2pServer =   new P2pServer(bc);
 
 app.use(bodyParser.json());
 
@@ -35,4 +35,4 @@ app.listen(HTTP_PORT, () =>
     console.log(`Listening on port ${HTTP_PORT}`)
 );
 
-P2pServer.listen();
+p2pServer.listen();

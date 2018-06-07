@@ -23,6 +23,8 @@ class P2pServer
         server.on('connection', socket => this.connectSocket(socket));
 
         this.connectToPeers();
+
+        console.log(`Listening for peer-to-peer connections: ${P2P_PORT}`);
     }
 
     connectToPeers()
