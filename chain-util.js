@@ -1,7 +1,8 @@
 //usa questo modulo che posside funzioni matematiche avanzate
 const EC      = require('elliptic').ec;
-const EC      = new EC('secp256k1');
+const ec      = new EC('secp256k1');
 const uuidV1  = require('uuid/V1');
+const SHA256			=	require('crypto-js/sha256');
 
 class ChainUtil
 {
@@ -13,6 +14,11 @@ class ChainUtil
   static id()
   {
     return uuidV1();
+  }
+
+  static hash(data)
+  {
+    return SHA256(JSON.stringify(data)).toString();
   }
 }
 
