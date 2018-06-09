@@ -1,12 +1,19 @@
-const Blockchain	=	require('./blockchain');
+const Wallet	=	require('./wallet');
+const wallet	=	new Wallet();
 
-const bc			=	new Blockchain();
+console.log(wallet.toString());
 
-const ripetizioni	=	10;
 
-for (let i=0; i<ripetizioni; i++)
-	console.log(bc.addBlock(`numero ${i}`).toString());
+/*
+	const Blockchain	=	require('./blockchain');
 
+	const bc			=	new Blockchain();
+
+	const ripetizioni	=	10;
+
+	for (let i=0; i<ripetizioni; i++)
+		console.log(bc.addBlock(`numero ${i}`).toString());
+*/
 	
 /*
 	const Block	=	require('./block');
