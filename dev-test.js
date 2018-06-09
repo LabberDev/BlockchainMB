@@ -7,6 +7,7 @@ const ripetizioni	=	10;
 for (let i=0; i<ripetizioni; i++)
 	console.log(bc.addBlock(`numero ${i}`).toString());
 
+	
 /*
 	const Block	=	require('./block');
 
