@@ -26,6 +26,30 @@ class Wallet
         //  sua funzione sign() critterà il messaggio
         return  this.keyPair.sign(dataHash);
     }
+
+    createTransaction(recipient, amount, transactionPool)
+    {
+        if (amount > this.balance)
+        {
+            console.log(`Amount: ${amount}, exceeds current balance: ${this.balance}`);
+            return;
+        }
+      
+        let transaction = transactionPool.existingTransaction(this.publicKey);
+        //  se esiste nella pool, la inserisce nelle transazioni
+        if (transaction)
+        {
+            transaction.update(this, recipient, amount);
+        }
+        //  se non esiste nella pool, crea una transazione e la mette nella pool
+        else
+        {
+            transaction = Transaction.newTransaction(this, recipient, amount);
+            transactionPool.updateOrAddTransaction(transaction);
+        }
+      
+        return transaction;
+      }
 }
 
 module.exports = Wallet;

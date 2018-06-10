@@ -1,4 +1,5 @@
 const ChainUtil =   require('../chain-util');
+const Transaction = require('./transaction');
 
 class Transaction
 {
@@ -12,13 +13,12 @@ class Transaction
         this.outputs    =   [];
     }
 
+    //  viene fatta quando ad una transazione vuole essere aggiunta un'altra operazione
     update(senderWallet, recipient, amount)
     {
         //  restituisce un puntatore all'oggetto output, tale che output.address === senderWallet.publicKey
         const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey);
     
-        console.log(`_________1______SenderOutput: ${senderOutput} ______________`);
-
         if (amount > senderOutput.amount)
         {
             console.log(`Amount: ${amount} exceeds balance.`);
