@@ -1,5 +1,5 @@
-const ChainUtil =   require('../chain-util');
-const Transaction = require('./transaction');
+const ChainUtil     =   require('../chain-util');
+const transaction   =   require('./transaction');
 
 class Transaction
 {
