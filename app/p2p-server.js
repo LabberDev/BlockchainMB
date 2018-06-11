@@ -1,11 +1,11 @@
-const Websocket = require('ws');
+const Websocket =   require('ws');
 
 //  default port 5001
-const P2P_PORT = process.env.P2P_PORT || 5001;
+const P2P_PORT  =   process.env.P2P_PORT || 5001;
 
 //  check if appears environment variable that is a stream that contains a list of web socket addresses
 //  if is present an environment variable it takes this one, although it takes an empty array
-const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
+const peers     =   process.env.PEERS ? process.env.PEERS.split(',') : [];
 
 //  contiene l'etichetta del messaggio
 const MESSAGE_TYPES =

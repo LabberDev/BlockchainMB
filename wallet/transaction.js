@@ -16,7 +16,7 @@ class Transaction
     update(senderWallet, recipient, amount)
     {
         //  restituisce un puntatore all'oggetto output, tale che output.address === senderWallet.publicKey
-        const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey);
+        const senderOutput  =   this.outputs.find(output => output.address === senderWallet.publicKey);
     
         if (amount > senderOutput.amount)
         {
@@ -24,7 +24,7 @@ class Transaction
             return;
         }
     
-        senderOutput.amount = senderOutput.amount - amount;
+        senderOutput.amount =   senderOutput.amount - amount;
         this.outputs.push({ amount, address: recipient });
         Transaction.signTransaction(this, senderWallet);
     
@@ -39,7 +39,7 @@ class Transaction
             return;
         }
 
-        const transaction = new this();
+        const transaction   =   new this();
 
         transaction.outputs.push(...[
             { amount: senderWallet.balance - amount, address: senderWallet.publicKey },

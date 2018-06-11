@@ -9,8 +9,8 @@ class Blockchain
 
     addBlock(data)
     {
-        const lastBlock    =   this.chain[this.chain.length-1];
-        const block =   Block.mineBlock(lastBlock,    data);
+        const lastBlock =   this.chain[this.chain.length-1];
+        const block     =   Block.mineBlock(lastBlock,    data);
         this.chain.push(block);
         return block;
     }
@@ -25,7 +25,7 @@ class Blockchain
         //  controlla ogni blocco della catena
         for (let i = 1; i < chain.length; i++)
         {
-            const block =   chain[i];
+            const block     =   chain[i];
             const lastBlock =   chain[i-1];
 
             //  se l'hash del penultimo blocco coincide con il lastHash dell'ultimo
@@ -52,7 +52,7 @@ class Blockchain
         }
       
         console.log('Replacing blockchain with the new chain.');
-        this.chain = newChain;
+        this.chain  =   newChain;
       }
 }
 
