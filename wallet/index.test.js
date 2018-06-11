@@ -1,5 +1,5 @@
-const Wallet = require('./index');
-const TransactionPool = require('./transaction-pool');
+const Wallet            =   require('./index');
+const TransactionPool   =   require('./transaction-pool');
 
 describe('Wallet', () =>
 {
@@ -7,17 +7,18 @@ describe('Wallet', () =>
 
     beforeEach(() =>
     {
-        allet = new Wallet();
-        tp = new TransactionPool();
+        wallet  =   new Wallet();
+        tp      =   new TransactionPool();
     });
 
     describe('creating a transaction', () => 
     {
         let transaction, sendAmount, recipient;
-        beforeEach(() => {
-            sendAmount = 50;
-            recipient = 'r4nd0m-4ddr3s';
-            transaction = wallet.createTransaction(recipient, sendAmount, tp);
+        beforeEach(() =>
+        {
+            sendAmount  =   50;
+            recipient   =   'r4nd0m-4ddr3s';
+            transaction =   wallet.createTransaction(recipient, sendAmount, tp);
         });
 
         describe('and doing the same transaction', () =>
