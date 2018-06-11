@@ -38,6 +38,7 @@ class Wallet
       
         let transaction = transactionPool.existingTransaction(this.publicKey);
         //  se esiste nella pool, la inserisce nelle transazioni
+        //  viene fatta quando si vuole aggiungere una operazione alla transazione
         if (transaction)
         {
             transaction.update(this, recipient, amount);

@@ -21,6 +21,7 @@ class TransactionPool
         }
     }
 
+    //   controlla se esiste nella pool, non nelle transazioni
     existingTransaction(address)
     {
         return this.transactions.find(transaction => transaction.input.address === address);

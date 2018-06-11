@@ -7,12 +7,20 @@ const P2P_PORT = process.env.P2P_PORT || 5001;
 //  if is present an environment variable it takes this one, although it takes an empty array
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
 
+//  contiene l'etichetta del messaggio
+const MESSAGE_TYPES =
+{
+    chain: 'CHAIN',
+    transaction: 'TRANSACTION'
+};
+
 class P2pServer
 {
-    constructor(blockchain) 
+    constructor(blockchain, transactionPool) 
     {
-        this.blockchain = blockchain;
-        this.sockets = [];
+        this.blockchain         =   blockchain;
+        this.sockets            =   [];
+        this.transactionPool    =   transactionPool;
     }
 
     listen()
@@ -48,6 +56,7 @@ class P2pServer
         this.sendChain(socket);
     }
 
+    //  quando un host effettua la send questa funzione lo riceve
     //  per ogni nuovo socket, prende il messaggio da lui ricevuto, effettua un parsing del 'data' ricevuto
     messageHandler(socket)
     {
@@ -56,21 +65,52 @@ class P2pServer
             //  lo strasforma in un tipo javascript
             const data  =   JSON.parse(message);
 
-            this.blockchain.replaceChain(data);
+            switch(data.type)
+            {
+                case MESSAGE_TYPES.chain:
+                    this.blockchain.replaceChain(data.chain);
+                    break;
+                case MESSAGE_TYPES.transaction:
+                    this.transactionPool.updateOrAddTransaction(data.transaction);
+                    break;
+            }
         });
     }
 
+    //  invia il messaggio di tipo chain e la chain stessa
     sendChain(socket)
     {
-        socket.send(JSON.stringify(this.blockchain.chain));
+        socket.send(JSON.stringify(
+        {
+            type:   MESSAGE_TYPES.chain,
+            chain:  this.blockchain.chain
+        }));
     }
 
+    //  invia il messaggio di tipo transazione e la transazione stessa
+    sendTransaction(socket, transaction)
+    {
+        //  .send funzione della libreria ws
+        socket.send(JSON.stringify(
+        {   
+            type:   MESSAGE_TYPES.transaction,
+            transaction
+        }));
+    }
+
+    //  invia ad ogni socket la chain aggiornata
     syncChains()
     {
         this.sockets.forEach(socket =>
         {
             this.sockets.forEach(socket => this.sendChain(socket));
         });
+    }
+
+    //  per ogni socket richiama la sendTransaction()
+    broadcastTransaction(transaction)
+    {
+        this.sockets.forEach(socket => this.sendTransaction(socket, transaction));
     }
 }
 
