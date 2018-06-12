@@ -69,28 +69,24 @@ class Wallet
             block.data.forEach(transaction =>
             {
                 transactions.push(transaction);
-            });    
+            });
         });
         //  attualmente transactions[] contiene tutte le transazioni della blockchain
 
         //  prende tutte le transazioni che ha fatto lui
-        const walletInputTs =   transactions
-            .filter(transaction => transaction.input.address === this.publicKey);
+        const walletInputTs =   transactions.filter(transaction => transaction.input.address === this.publicKey);
 
         //  se è stata fatta almeno una transazione
         if (walletInputTs.length > 0)
         {
             //  prende l'ultima transazione da lui eseguita (prev contiene sempre l'ultima)
-            const recentInput   =   walletInputTs.reduce( (prev, current) =>
+            const recentInputT   =   walletInputTs.reduce( (prev, current) =>
             {
                 prev.input.timestamp > current.input.timestamp ? prev : current
             });
 
             //  dell'ultima transazione prende l'output che ha il suo indirizzo (soldi di ritorno)
-            balance     =   recentInput.outputs.find(output =>
-            {
-                output.address === this.publicKey
-            }).amount;
+            balance     =   recentInputT.outputs.find(output => output.address === this.publicKey).amount;
             
             //  timestamp dell'ultimo blocco con sua transazione in output
             startTime   =   recentInputT.input.timestamp;
@@ -101,7 +97,7 @@ class Wallet
             //  per ogni transazione di input effettuata dopo l'ultima di output, somma quelle in ingresso verso di sè
             if (transaction.input.timestamp > startTime)
             {
-                transaction.output.find(output =>
+                transaction.outputs.find(output =>
                 {
                     if (output.address === this.publicKey)
                     {
