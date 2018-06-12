@@ -71,7 +71,7 @@ app.get('/public-key', (req, res) =>
 
 app.get('/balance', (req, res) =>
 {
-    res.json(wallet.calculateBalance(bc));
+    res.json({ balance: wallet.calculateBalance(bc) });
 });
 
 p2pServer.listen();
