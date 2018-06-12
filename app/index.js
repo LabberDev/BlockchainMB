@@ -1,4 +1,5 @@
 const express           =   require('express');
+const cors              =   require('cors');
 const bodyParser        =   require('body-parser');
 const Blockchain        =   require('../blockchain');
 const P2pServer         =   require('./p2p-server');
@@ -22,6 +23,7 @@ const p2pServer =   new P2pServer(bc, tp);
 const miner     =   new Miner(bc, tp, wallet, p2pServer);
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get('/blocks', (req, res) =>
 {
@@ -65,6 +67,11 @@ app.get('/mine-transactions', (req, res) =>
 app.get('/public-key', (req, res) =>
 {
     res.json({ publicKey: wallet.publicKey });
+});
+
+app.get('/balance', (req, res) =>
+{
+    res.json(wallet.calculateBalance(bc));
 });
 
 p2pServer.listen();
