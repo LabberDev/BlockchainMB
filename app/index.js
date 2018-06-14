@@ -52,10 +52,16 @@ app.get('/transactions', (req, res) =>
 app.post('/transact', (req, res) =>
 {
     const { recipient, amount } =   req.body;
-    const transaction           =   wallet.createTransaction(recipient, amount, bc, tp);
-    p2pServer.broadcastTransaction(transaction);
-    res.redirect('/transactions');
-})
+    const transaction = wallet.createTransaction(recipient, amount, bc, tp);
+    if(transaction)
+    {
+        p2pServer.broadcastTransaction(transaction);
+        res.redirect('/transactions');
+    } else{
+        const warning = "WARN: Saldo non sufficente. OPERAZIONE ANNULLATA"
+        res.json(warning);
+    }
+});
 
 app.get('/mine-transactions', (req, res) =>
 {
